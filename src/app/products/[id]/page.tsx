@@ -2,8 +2,13 @@ import { products } from "@/lib/data";
 import NegotiationForm from "@/components/NegotiationForm";
 import Image from "next/image";
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const product = products.find((p) => p.id === params.id);
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const resolvedParams = await params;
+  const product = products.find((p) => p.id === resolvedParams.id);
 
   if (!product) {
     return <div className="container py-8">Product not found</div>;
@@ -29,7 +34,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               ${product.price.toFixed(2)}
             </p>
           </div>
-          <NegotiationForm price={product.price} />
+          <NegotiationForm product={product} />
         </div>
       </div>
     </div>
