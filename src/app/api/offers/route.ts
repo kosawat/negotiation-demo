@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
           2
         )} was already accepted!`,
         resetAvailable: true,
+        acceptedOffer: Number(acceptedOffer.toFixed(2)),
       });
     }
 
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
         message: `You've used all ${maxOffersCount} chances. Special offer available: $${lastOffer.toFixed(
           2
         )}`,
-        specialOffer: lastOffer,
+        specialOffer: Number(lastOffer.toFixed(2)),
         resetAvailable: true,
       });
     }
@@ -61,6 +62,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
           message: `Offer accepted! You got it for $${offer.toFixed(2)}`,
           newOffer: offer,
+          acceptedOffer: Number(offer.toFixed(2)),
+          resetAvailable: true,
         });
       } else {
         const remaining = maxOffersCount - currentOfferCount;
@@ -79,6 +82,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
           message: `Offer accepted! You got it for $${offer.toFixed(2)}`,
           newOffer: offer,
+          acceptedOffer: Number(offer.toFixed(2)),
+          resetAvailable: true,
         });
       } else {
         // Calculate special offer: average of previous offers + current, adjusted between minPrice and price
@@ -103,7 +108,7 @@ export async function POST(req: NextRequest) {
           message: `Offer rejected. You've used all ${maxOffersCount} chances. Special offer generated: $${specialOffer.toFixed(
             2
           )}`,
-          specialOffer,
+          specialOffer: Number(specialOffer.toFixed(2)),
           newOffer: offer, // Still store the rejected offer
           resetAvailable: true,
         });
